@@ -26,7 +26,7 @@ early_stopping = EarlyStopping(monitor='val_loss',patience=5, min_delta=0.001)
 lr_reduce = ReduceLROnPlateau(monitor='loss',patience=20,verbose=1)
 checkpoint = ModelCheckpoint(os.path.join(ROOT_DIR, 'keras_model', 'ckpt', hyper + '.h5'), period=1,save_best_only=True, monitor='val_acc')
 callbacks = [tensorboard,lr_reduce,checkpoint]
-batch_size = 16 * Config.gpu_count
+batch_size = Config.image_per_gpu * Config.gpu_count
 
 num_output = 8
 if Config.backbone == 'resnet50':
