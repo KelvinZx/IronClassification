@@ -28,7 +28,7 @@ checkpoint = ModelCheckpoint(os.path.join('ckpt', hyper + '.h5'), period=1,save_
 callbacks = [tensorboard,lr_reduce,checkpoint]
 batch_size = 16 * Config.gpu_count
 
-num_output = 7
+num_output = 8
 if Config.backbone == 'resnet50':
     base_model = ResnetBuilder.build_resnet_50(input_shape=(224,224,3), num_outputs=num_output, block_fun='resnet')
 if Config.backbone == 'resnet101':
