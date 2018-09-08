@@ -14,7 +14,7 @@ class Config(object):
     parser.add_argument("--out_class", default=8, type=int)
     args = parser.parse_args()
     backbone = args.backbone
-    out_class = args.classes
+    out_class = args.out_class
     image_per_gpu = args.image_per_gpu
     epoch = args.epoch
     lr = args.lr
