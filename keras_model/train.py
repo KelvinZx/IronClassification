@@ -53,13 +53,13 @@ base_model.summary()
 
 
 loss = cls_cross_entropy()
-optimizer = SGD(lr=Config.lr, momentum=0.9, decay=0.00001)
+optimizer = SGD(lr=Config.lr, momentum=0.9, decay=0.00001, nesterov=True)
 train_gen = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True, rotation_range=10,
                                width_shift_range=0.1, height_shift_range=0.1, shear_range=10, zoom_range=0.1,
                                fill_mode='reflect', horizontal_flip=True, vertical_flip=True)
 val_gen = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True)
-train_data = train_gen.flow_from_directory(TRAIN_OPEN_DIR, target_size=(224,224), batch_size=batch_size)
-val_data = val_gen.flow_from_directory(VALID_OPEN_DIR, target_size=(224,224), batch_size=batch_size)
+train_data = train_gen.flow_from_directory(TRAIN_OPEN_DIR, target_size=(224,224), batch_size=batch_size, shuffle=True, color_mode='rgb')
+val_data = val_gen.flow_from_directory(VALID_OPEN_DIR, target_size=(224,224), batch_size=batch_size, shuffle=True, color_mode='rgb')
 
 train_step_per_epoch = len(train_data)/batch_size
 valid_step_per_epoch = len(val_data)/batch_size
