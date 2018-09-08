@@ -13,6 +13,13 @@ if ROOT_DIR.endswith('keras_model'):
     ROOT_DIR = os.path.dirname(ROOT_DIR)
 keras_tb = os.path.join(ROOT_DIR, 'keras_model', 'tblogs')
 ckpt_keras = os.path.join(ROOT_DIR, 'keras_model', 'ckpt')
+weights_keras = os.path.join(ROOT_DIR, 'keras_model', 'model_weights')
+json_keras = os.path.join(ROOT_DIR, 'keras_model', 'json')
+OPEN_DIR = os.path.join(ROOT_DIR, 'breasKHis_patient')
+TRAIN_OPEN_DIR = os.path.join(OPEN_DIR, 'train')
+VALID_OPEN_DIR = os.path.join(OPEN_DIR, 'valid')
+TEST_OPEN_DIR = os.path.join(OPEN_DIR, 'test')
+
 hyper = Config.backbone
 tensorboard = TensorBoard(os.path.join(keras_tb, hyper))
 early_stopping = EarlyStopping(monitor='val_loss',patience=5, min_delta=0.001)
@@ -51,8 +58,8 @@ train_gen = ImageDataGenerator(samplewise_center=True, samplewise_std_normalizat
                                width_shift_range=0.1, height_shift_range=0.1, shear_range=10, zoom_range=0.1,
                                fill_mode='reflect', horizontal_flip=True, vertical_flip=True)
 val_gen = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True)
-train_data = train_gen.flow_from_directory(os.path.join(ROOT_DIR, 'train'), target_size=(224,224), batch_size=batch_size)
-val_data = val_gen.flow_from_directory(os.path.join(ROOT_DIR, 'val'), target_size=(224,224), batch_size=batch_size)
+train_data = train_gen.flow_from_directory(TRAIN_OPEN_DIR, target_size=(224,224), batch_size=batch_size)
+val_data = val_gen.flow_from_directory(VALID_OPEN_DIR, target_size=(224,224), batch_size=batch_size)
 
 train_step_per_epoch = len(train_data)/batch_size
 valid_step_per_epoch = len(val_data)/batch_size
@@ -61,3 +68,9 @@ base_model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics
 base_model.fit_generator(train_data, steps_per_epoch=train_step_per_epoch,
                          epochs=200,callbacks=callbacks,
                          validation_data=val_data,validation_steps=valid_step_per_epoch)
+
+model_json = base_model.to_json()
+with open(os.path.join(json_keras, hyper + '.json'), 'w') as json_file:
+    json_file.write(model_json)
+base_model.save_weights(os.path.join(weights_keras, hyper + '.h5'))
+print(hyper + 'has been saved')
