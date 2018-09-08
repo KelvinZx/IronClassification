@@ -17,7 +17,7 @@ weights_keras = os.path.join(ROOT_DIR, 'keras_model', 'model_weights')
 json_keras = os.path.join(ROOT_DIR, 'keras_model', 'json')
 OPEN_DIR = os.path.join(ROOT_DIR, 'breasKHis_patient')
 TRAIN_OPEN_DIR = os.path.join(OPEN_DIR, 'train')
-VALID_OPEN_DIR = os.path.join(OPEN_DIR, 'valid')
+VALID_OPEN_DIR = os.path.join(OPEN_DIR, 'val')
 TEST_OPEN_DIR = os.path.join(OPEN_DIR, 'test')
 
 hyper = Config.backbone
